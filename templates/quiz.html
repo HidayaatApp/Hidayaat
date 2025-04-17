@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>آية عشوائية من القرآن</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
+      color: #ffffff;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h1 {
+      color: #e74c3c;
+      margin-bottom: 30px;
+    }
+
+    button, select {
+      font-family: inherit;
+    }
+
+    #verse-container {
+      margin: auto;
+      margin-top: 30px;
+      padding: 25px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+    }
+
+    #ayah {
+      font-size: 28px;
+      margin-bottom: 15px;
+      direction: rtl;
+      color: #ffffff;
+    }
+
+    #surah {
+      font-size: 18px;
+      color: #cccccc;
+      display: none;
+      margin-top: 10px;
+    }
+
+    #answer-section {
+      margin-top: 25px;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      font-size: 16px;
+      width: 280px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      text-align: right;
+      background-color: #2c3e50;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 28px;
+      font-size: 17px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    .main-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .green-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .gray-btn {
+      background-color: #7f8c8d;
+      color: white;
+    }
+
+    #reciter-select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+      background-color: #34495e;
+      color: white;
+      border: 1px solid #555;
+    }
+
+    #feedback {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #audio-controls button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #audio-controls button:hover {
+      background-color: #1e8449;
+    }
+
+    footer {
+      margin-top: 60px;
+      color: #ccc;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📖 آية عشوائية من القرآن الكريم</h1>
+
+  <button class="main-btn" onclick="getRandomAyah()">احصل على آية</button>
+
+  <div id="verse-container">
+    <div id="ayah"></div>
+
+    <label for="reciter-select">اختر القارئ:</label><br>
+    <select id="reciter-select" onchange="onReciterChange()">
+      <option value="Dossary">الدوسري</option>
+      <option value="Husary">الحصري</option>
+      <option value="Alafasy">العفاسي</option>
+    </select>
+
+    <div id="audio-controls" style="margin-top: 15px;">
+      <button id="toggle-audio" onclick="toggleAudio()">▶️ تشغيل التلاوة</button>
+    </div>
+    <audio id="recitation" preload="auto" style="display: none;"></audio>
+
+    <div id="answer-section">
+      <p>من أي سورة هذه الآية؟</p>
+      <input type="text" id="surah-input" placeholder="اكتب اسم السورة..."><br>
+      <button class="green-btn" onclick="checkAnswer()">تحقق من الإجابة</button>
+      <button class="gray-btn" id="show-answer-btn" onclick="showAnswer()" style="display:none;">عرض الإجابة</button>
+      <div id="feedback"></div>
+    </div>
+
+    <div id="surah"></div>
+  </div>
+  <footer></footer>
+
+  <script>
+    let currentSurahEnglish = "";
+    let currentSurahArabic = "";
+
+    function levenshtein(a, b) {
+      const matrix = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+      for (let j = 1; j <= b.length; j++) matrix[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          if (a[i - 1] === b[j - 1]) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j - 1] + 1
+            );
+          }
+        }
+      }
+      return matrix[a.length][b.length];
+    }
+
+    function similarity(a, b) {
+      a = a.toLowerCase().trim();
+      b = b.toLowerCase().trim();
+      const distance = levenshtein(a, b);
+      return 1 - distance / Math.max(a.length, b.length);
+    }
+
+    async function getRandomAyah() {
+      try {
+        const reciter = document.getElementById("reciter-select").value;
+
+        const surahRes = await fetch("https://api.alquran.cloud/v1/surah");
+        const surahs = (await surahRes.json()).data;
+        const surah = surahs[Math.floor(Math.random() * surahs.length)];
+        const ayahNum = Math.floor(Math.random() * surah.numberOfAyahs) + 1;
+
+        const ayahRes = await fetch(`https://api.alquran.cloud/v1/ayah/${surah.number}:${ayahNum}/ar`);
+        const ayahData = (await ayahRes.json()).data;
+
+        document.getElementById("ayah").innerText = ayahData.text;
+        document.getElementById("verse-container").style.display = "block";
+        document.getElementById("surah").style.display = "none";
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("surah-input").value = "";
+        document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+
+        const surahStr = String(surah.number).padStart(3, '0');
+        const ayahStr = String(ayahNum).padStart(3, '0');
+        const fileName = `${surahStr}${ayahStr}`;
+
+        let reciterFolder = "";
+        if (reciter === "Husary") reciterFolder = "Husary_128kbps";
+        else if (reciter === "Dossary") reciterFolder = "Yasser_Ad-Dussary_128kbps";
+        else reciterFolder = "Alafasy_128kbps";
+
+        const audioURL = `https://everyayah.com/data/${reciterFolder}/${fileName}.mp3`;
+
+        const audio = document.getElementById("recitation");
+        audio.pause();
+        audio.style.display = "none";
+        audio.src = audioURL;
+        audio.load();
+
+        audio.onended = () => {
+          document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+        };
+
+        audio.onerror = () => {
+          document.getElementById("feedback").innerText = `🔇 لم تتوفر التلاوة لهذه الآية مع ${reciter}.`;
+          document.getElementById("feedback").style.color = "orange";
+        };
+
+        currentSurahEnglish = surah.englishName.toLowerCase().replace(/-/g, ' ');
+        currentSurahArabic = surah.name;
+        document.getElementById("surah").innerText = `السورة: ${surah.name} - الآية: ${ayahNum}`;
+
+      } catch (error) {
+        console.error(" حدث خطأ أثناء تحميل الآية أو التلاوة:", error);
+      }
+    }
+
+    function toggleAudio() {
+      const audio = document.querySelector("audio#recitation");
+      const button = document.getElementById("toggle-audio");
+
+      if (audio.paused || audio.ended) {
+        audio.play().then(() => {
+          button.innerText = "⏸️ إيقاف التلاوة";
+        }).catch(err => {
+          console.error("Audio play error:", err);
+        });
+      } else {
+        audio.pause();
+        button.innerText = "▶️ تشغيل التلاوة";
+      }
+    }
+
+    function resetAudioState() {
+      const audio = document.getElementById("recitation");
+      audio.pause();
+      audio.currentTime = 0;
+      document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+    }
+
+    function onReciterChange() {
+      resetAudioState();
+      getRandomAyah();
+    }
+
+    function normalizeArabic(text) {
+      return text.normalize("NFD")
+        .replace(/[\u064B-\u0652]/g, '')
+        .replace(/[\u0621-\u063A\u0641-\u064A]/g, c => c)
+        .replace(/surah/gi, '')
+        .trim();
+    }
+
+    function normalizeEnglish(text) {
+      return text.toLowerCase()
+        .replace(/-/g, ' ')
+        .replace(/surah/gi, '')
+        .trim();
+    }
+
+    function showAnswer() {
+      document.getElementById("surah").style.display = "block";
+      document.getElementById("show-answer-btn").style.display = "none";
+    }
+
+    function checkAnswer() {
+      const userGuessRaw = document.getElementById("surah-input").value;
+      const feedback = document.getElementById("feedback");
+
+      if (!userGuessRaw) {
+        feedback.innerText = " من فضلك أدخل اسم السورة.";
+        feedback.style.color = "orange";
+        return;
+      }
+
+      const userGuessEnglish = normalizeEnglish(userGuessRaw);
+      const expectedEnglish = normalizeEnglish(currentSurahEnglish);
+      const userGuessArabic = normalizeArabic(userGuessRaw);
+      const expectedArabic = normalizeArabic(currentSurahArabic);
+
+      const threshold = 0.60;
+
+      const isCorrect =
+        similarity(userGuessEnglish, expectedEnglish) >= threshold ||
+        similarity(userGuessArabic, expectedArabic) >= threshold;
+
+      if (isCorrect) {
+        feedback.innerText = " إجابة صحيحة!";
+        feedback.style.color = "green";
+        document.getElementById("show-answer-btn").style.display = "none";
+        setTimeout(() => getRandomAyah(), 1000);
+      } else {
+        feedback.innerText = " إجابة خاطئة، حاول مرة أخرى.";
+        feedback.style.color = "red";
+        document.getElementById("show-answer-btn").style.display = "inline-block";
+      }
+    }
+  </script>
+</body>
+</html>
