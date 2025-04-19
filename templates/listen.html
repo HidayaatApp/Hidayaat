@@ -231,7 +231,8 @@
     </select>
   </div>
 
-  <button onclick="startRecitation()">▶️ Start Recitation</button>
+  <button id="toggle-audio" onclick="toggleAudio()">▶️ Start Recitation</button>
+
 
   <div id="ayah-text">—</div>
   <div id="info">—</div>
@@ -260,6 +261,28 @@
         }
       });
     }
+
+    let isStarted = false;
+let isPaused = false;
+
+function toggleAudio() {
+  const audio = document.getElementById("audio");
+  const toggleBtn = document.getElementById("toggle-audio");
+
+  if (!isStarted) {
+    startRecitation(); // this sets up and begins audio
+    isStarted = true;
+    toggleBtn.innerText = "⏸️ Pause";
+  } else if (isPaused) {
+    audio.play();
+    isPaused = false;
+    toggleBtn.innerText = "⏸️ Pause";
+  } else {
+    audio.pause();
+    isPaused = true;
+    toggleBtn.innerText = "▶️ Resume";
+  }
+}
 
     function startRecitation() {
       currentSurah = parseInt(document.getElementById("surah-picker").value);
@@ -319,6 +342,8 @@
             audio.load();
             audio.style.display = "block";
             audio.play();
+            document.getElementById("toggle-audio").innerText = "⏸️ Pause";
+
           });
       } else {
         const folder = selectedReciter === "Dossary"
@@ -339,6 +364,10 @@
         } else {
           updateProgress(true);
           info.innerText = `✅ Finished reciting Surah ${surahName}`;
+          document.getElementById("toggle-audio").innerText = "▶️ Start Recitation";
+isStarted = false;
+isPaused = false;
+
         }
       };
     });
