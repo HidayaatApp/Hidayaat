@@ -4,98 +4,95 @@
   <meta charset="UTF-8">
   <title>تلاوة السورة - آية بآية</title>
   <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
-    color: #fff;
-    text-align: center;
-    padding: 40px;
-    margin: 0;
-  }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
 
-  h1 {
-    font-size: 32px;
-    color: #ff4c4c;
-    margin-bottom: 30px;
-  }
+    h1 {
+      font-size: 32px;
+      color: #ff4c4c;
+      margin-bottom: 30px;
+    }
 
-  select, button {
-    padding: 12px;
-    font-size: 18px;
-    margin: 10px;
-    border-radius: 8px;
-    border: none;
-  }
+    select, button {
+      padding: 12px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
 
-  select {
-    background-color: #eeeeee;
-    color: #000;
-  }
+    select {
+      background-color: #eeeeee;
+      color: #000;
+    }
 
-  button {
-    background-color: #388e3c;
-    color: white;
-    cursor: pointer;
-  }
+    button {
+      background-color: #388e3c;
+      color: white;
+      cursor: pointer;
+    }
 
-  button:hover {
-    background-color: #2e7d32;
-  }
+    button:hover {
+      background-color: #2e7d32;
+    }
 
-  #ayah-text {
-    font-size: 30px;
-    color: #ffffff;
-    margin-top: 35px;
-    padding: 25px;
-    background-color: #111827;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    line-height: 2.2;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    transition: opacity 0.5s ease;
-  }
+    #ayah-text {
+      font-size: 30px;
+      color: #ffffff;
+      margin-top: 35px;
+      padding: 25px;
+      background-color: #111827;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      line-height: 2.2;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: opacity 0.5s ease;
+    }
 
-  #info {
-    margin-top: 25px;
-    font-size: 22px;
-    color: #cccccc;
-    transition: opacity 0.5s ease;
-  }
+    #info {
+      margin-top: 25px;
+      font-size: 22px;
+      color: #cccccc;
+      transition: opacity 0.5s ease;
+    }
 
-  .progress-container {
-    width: 80%;
-    height: 20px;
-    background-color: #444;
-    border-radius: 10px;
-    margin: 40px auto 20px;
-    overflow: hidden;
-  }
+    .progress-container {
+      width: 80%;
+      height: 20px;
+      background-color: #444;
+      border-radius: 10px;
+      margin: 40px auto 20px;
+      overflow: hidden;
+    }
 
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #4caf50;
-    transition: width 0.5s ease;
-  }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #4caf50;
+      transition: width 0.5s ease;
+    }
 
-  audio {
-  display: block;
-  margin: 30px auto 0 auto;
-  width: 80%;
-  max-width: 700px;
-}
+    audio {
+      display: block;
+      margin: 30px auto 0 auto;
+      width: 80%;
+      max-width: 700px;
+    }
 
-
-  footer {
-    margin-top: 60px;
-    font-size: 14px;
-    color: #aaa;
-  }
-</style>
-
-
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
 
@@ -103,14 +100,14 @@
 
   <div>
     <label for="reciter-picker">اختر القارئ:</label>
-    <select id="reciter-picker">
+    <select id="reciter-picker" onchange="handleRecitationChange()">
       <option value="Alafasy">العفاسي</option>
       <option value="Dossary">الدوسري</option>
       <option value="Husary">الحصري</option>
     </select>
 
     <label for="surah-picker">اختر السورة:</label>
-    <select id="surah-picker" onchange="populateAyahPicker()">
+    <select id="surah-picker" onchange="populateAyahPicker(); handleRecitationChange()">
       <option value="1">الفاتحة</option>
       <option value="2">البقرة</option>
       <option value="3">آل عمران</option>
@@ -227,22 +224,21 @@
       <option value="114">الناس</option>
     </select>
 
-    <label for="ayah-picker">اختر الآية للبدء:</label>
-    <select id="ayah-picker">
+    <label for="ayah-picker">ابدأ من الآية:</label>
+    <select id="ayah-picker" onchange="handleRecitationChange()">
       <option value="1">١</option>
     </select>
   </div>
 
-  <button onclick="startRecitation()">▶️ ابدأ التلاوة</button>
+  <button id="toggle-audio" onclick="toggleAudio()">▶️ ابدأ التلاوة</button>
 
   <div id="ayah-text">—</div>
   <div id="info">—</div>
   <audio id="audio" controls></audio>
 
   <div class="progress-container">
-  <div id="progress-bar" class="progress-bar"></div>
-</div>
-
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
 
   <footer></footer>
 
@@ -252,6 +248,8 @@
     let currentSurah = 1;
     let surahName = "";
     let selectedReciter = "Alafasy";
+    let isStarted = false;
+    let isPaused = false;
 
     function populateAyahPicker() {
       const surahId = document.getElementById("surah-picker").value;
@@ -264,6 +262,36 @@
       });
     }
 
+    function handleRecitationChange() {
+      if (isStarted) {
+        isStarted = false;
+        isPaused = false;
+        document.getElementById("toggle-audio").innerText = "▶️ ابدأ التلاوة";
+        const audio = document.getElementById("audio");
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    }
+
+    function toggleAudio() {
+      const audio = document.getElementById("audio");
+      const toggleBtn = document.getElementById("toggle-audio");
+
+      if (!isStarted) {
+        startRecitation();
+        isStarted = true;
+        toggleBtn.innerText = "⏸️ إيقاف مؤقت";
+      } else if (isPaused) {
+        audio.play();
+        isPaused = false;
+        toggleBtn.innerText = "⏸️ إيقاف مؤقت";
+      } else {
+        audio.pause();
+        isPaused = true;
+        toggleBtn.innerText = "▶️ استئناف";
+      }
+    }
+
     function startRecitation() {
       currentSurah = parseInt(document.getElementById("surah-picker").value);
       selectedReciter = document.getElementById("reciter-picker").value;
@@ -274,18 +302,17 @@
         .then(data => {
           totalAyahs = data.data.numberOfAyahs;
           surahName = data.data.name;
-          document.getElementById("info").innerText = `${surahName} ${surahName} - الآية ${currentAyah}`;
+          document.getElementById("info").innerText = `سورة ${surahName} - الآية ${currentAyah}`;
           updateProgress();
           playAyah(currentSurah, currentAyah);
         });
     }
+
     function updateProgress(finished = false) {
-  const progressBar = document.getElementById("progress-bar");
-  const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
-  progressBar.style.width = progress + "%";
-}
-
-
+      const progressBar = document.getElementById("progress-bar");
+      const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
+      progressBar.style.width = progress + "%";
+    }
 
     function playAyah(surah, ayah) {
       const audio = document.getElementById("audio");
@@ -293,14 +320,20 @@
       const info = document.getElementById("info");
       updateProgress();
 
-      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`)
-        .then(res => res.json())
-        .then(data => {
+      Promise.all([
+        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`),
+        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
+      ])
+        .then(responses => Promise.all(responses.map(res => res.json())))
+        .then(([arabicData, englishData]) => {
           ayahText.style.opacity = 0;
           info.style.opacity = 0;
 
           setTimeout(() => {
-            ayahText.innerText = data.data.text;
+            ayahText.innerHTML = `
+              <div style="font-size: 30px; direction: rtl; margin-bottom: 20px;">${arabicData.data.text}</div>
+              <div style="font-size: 20px; direction: ltr; color: #ccc;">${englishData.data.text}</div>
+            `;
             info.innerText = `سورة ${surahName} - الآية ${ayah}`;
             ayahText.style.opacity = 1;
             info.style.opacity = 1;
@@ -336,7 +369,10 @@
               playAyah(surah, currentAyah);
             } else {
               updateProgress(true);
-              info.innerText = `انتهت تلاوة سورة ${surahName}`;
+              info.innerText = `✅ انتهت تلاوة سورة ${surahName}`;
+              document.getElementById("toggle-audio").innerText = "▶️ ابدأ التلاوة";
+              isStarted = false;
+              isPaused = false;
             }
           };
         });
