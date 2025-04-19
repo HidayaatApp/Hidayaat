@@ -320,20 +320,14 @@
       const info = document.getElementById("info");
       updateProgress();
 
-      Promise.all([
-        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`),
-        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
-      ])
-        .then(responses => Promise.all(responses.map(res => res.json())))
-        .then(([arabicData, englishData]) => {
+      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`)
+        .then(res => res.json())
+        .then(data => {
           ayahText.style.opacity = 0;
           info.style.opacity = 0;
 
           setTimeout(() => {
-            ayahText.innerHTML = `
-              <div style="font-size: 30px; direction: rtl; margin-bottom: 20px;">${arabicData.data.text}</div>
-              <div style="font-size: 20px; direction: ltr; color: #ccc;">${englishData.data.text}</div>
-            `;
+            ayahText.innerText = data.data.text;
             info.innerText = `سورة ${surahName} - الآية ${ayah}`;
             ayahText.style.opacity = 1;
             info.style.opacity = 1;
