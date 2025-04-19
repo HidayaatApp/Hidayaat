@@ -16,7 +16,7 @@ def listen():
     return render_template('listen.html')
 
 # Arabic pages
-@app.route('/ar/t')
+@app.route('/ar/')
 def ar_home():
     return render_template('ar/index.html')
 
