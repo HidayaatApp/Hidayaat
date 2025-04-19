@@ -1,130 +1,239 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quran Learning App</title>
+  <title>Hidayaat - Quran Learning App</title> <!-- TODO: replace -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
+    :root {
+      --primary: #1abc9c;
+      --primary-dark: #16a085;
+      --bg: #f7f9fa;
+      --header-bg: #ffffffcc;
+      --text-dark: #2c3e50;
+      --text-light: #6c757d;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
       margin: 0;
-      padding: 0;
-      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-dark);
     }
 
     header {
+      background-color: var(--header-bg);
+      backdrop-filter: blur(10px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      background-color: rgba(0, 0, 0, 0.3);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      padding: 15px 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
-      z-index: 999;
+      z-index: 1000;
     }
 
     .header-title {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
-      color: #1abc9c;
+      color: var(--primary-dark);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
+      position: relative;
+    }
+
+    .custom-select {
+      position: relative;
+      user-select: none;
+    }
+
+    .custom-select-btn {
+      border: 1px solid var(--primary);
+      background-color: transparent;
+      color: var(--text-dark);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 100px;
+    }
+
+    .custom-select-options {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background: white;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+    }
+
+    .custom-select-options.active {
+      display: flex;
+    }
+
+    .custom-select-options div {
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+
+    .custom-select-options div:hover {
+      background-color: var(--primary);
+      color: white;
     }
 
     .icon-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
+      background-color: var(--primary);
       color: white;
-      font-size: 22px;
-      transition: transform 0.2s;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     .icon-btn:hover {
-      transform: scale(1.2);
-      color: #1abc9c;
+      background-color: var(--primary-dark);
+    }
+
+    main {
+      padding: 60px 20px;
+      text-align: center;
     }
 
     h1 {
-      font-size: 40px;
-      margin: 60px 0 20px;
-      text-align: center;
-      text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    p.tagline {
+      font-size: 18px;
+      color: var(--text-light);
+      margin-bottom: 40px;
     }
 
     .menu {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 25px;
-      padding: 0 20px;
+      gap: 20px;
     }
 
     .menu a {
-      display: inline-block;
-        text-align: center;
-      padding: 20px 40px;
-      min-width: 280px;
-      background-color: #1abc9c;
-      color: white;
       text-decoration: none;
-      border-radius: 12px;
-      font-size: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 10px;
       font-weight: bold;
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
+      font-size: 18px;
+      width: 260px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, background-color 0.3s ease;
     }
 
     .menu a:hover {
-      background-color: #16a085;
-      transform: translateY(-4px) scale(1.03);
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
     }
 
     footer {
-      margin-top: 60px;
       text-align: center;
-      color: #ccc;
-      font-size: 14px;
       padding: 20px;
+      font-size: 14px;
+      color: var(--text-light);
+      margin-top: 60px;
+    }
+
+    @media (max-width: 600px) {
+      .menu a {
+        width: 90%;
+      }
+
+      .header-title {
+        font-size: 20px;
+      }
     }
   </style>
-
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
   <header>
-    <div class="header-title">Quran Learning App</div> <!-- TODO: Change name -->
+    <div class="header-title">Hidayaat</div>
     <div class="header-actions">
-      <button class="icon-btn" onclick="toggleLanguage()" title="Switch Language">
-        🌐
-      </button>
-      <button class="icon-btn" onclick="location.href='/login'" title="Login / Sign Up">
-        <i class="fas fa-user-circle"></i>
+      <div class="custom-select">
+        <div class="custom-select-btn" id="lang-btn">English <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
+        <div class="custom-select-options" id="lang-options">
+          <div data-lang="en">English</div>
+          <div data-lang="ar">العربية</div>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="location.href='/login'">
+        <i class="fas fa-sign-in-alt"></i> Login
       </button>
     </div>
   </header>
 
-  <h1>Welcome to Hidayati</h1> <!-- TODO: Tagline -->
-
-  <div class="menu">
-    <a href="/quiz">Ayah Test</a>
-    <a href="/listen">Listen to the Quran</a>
-  </div>
+  <main>
+    <h1>Welcome to Hidayaat</h1>
+    <p class="tagline">Learn the Quran interactively, one ayah at a time.</p>
+    <div class="menu">
+      <a href="/quiz"><i class="fas fa-brain"></i> Ayah Test</a>
+      <a href="/listen"><i class="fas fa-headphones-alt"></i> Listen to Quran</a>
+    </div>
+  </main>
 
   <footer>
-    &copy; 2025 Hidayati. All rights reserved.
+    &copy; 2025 Hidayaat. All rights reserved.
   </footer>
 
   <script>
-function toggleLanguage() {
-  window.location.href = "/ar/";
-}
+    const langBtn = document.getElementById('lang-btn');
+    const langOptions = document.getElementById('lang-options');
+
+    langBtn.addEventListener('click', () => {
+      langOptions.classList.toggle('active');
+    });
+
+    langOptions.querySelectorAll('div').forEach(option => {
+      option.addEventListener('click', () => {
+        const lang = option.getAttribute('data-lang');
+        langBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
+        langOptions.classList.remove('active');
+
+        if (lang === 'ar') {
+          window.location.href = '/ar/';
+        } else {
+          window.location.href = '/';
+        }
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.custom-select')) {
+        langOptions.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>
