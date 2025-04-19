@@ -100,14 +100,14 @@
 
   <div>
     <label for="reciter-picker">Reciter:</label>
-    <select id="reciter-picker">
+    <select id="reciter-picker" onchange="handleRecitationChange()">
       <option value="Alafasy">Alafasy</option>
       <option value="Dossary">Dossary</option>
       <option value="Husary">Husary</option>
     </select>
 
     <label for="surah-picker">Surah:</label>
-    <select id="surah-picker" onchange="populateAyahPicker()">
+    <select id="surah-picker" onchange="populateAyahPicker(); handleRecitationChange()">
         <option value="1">Al-Fatiha</option>
         <option value="2">Al-Baqarah</option>
         <option value="3">Aali-Imran</option>
@@ -226,7 +226,7 @@
     </select>
 
     <label for="ayah-picker">Start from Ayah:</label>
-    <select id="ayah-picker">
+    <select id="ayah-picker" onchange="handleRecitationChange()">
       <option value="1">1</option>
     </select>
   </div>
@@ -283,8 +283,17 @@ function toggleAudio() {
     toggleBtn.innerText = "▶️ Resume";
   }
 }
-
-    function startRecitation() {
+function handleRecitationChange() {
+  if (isStarted) {
+    isStarted = false;
+    isPaused = false;
+    document.getElementById("toggle-audio").innerText = "▶️ Start Recitation";
+    const audio = document.getElementById("audio");
+    audio.pause();
+    audio.currentTime = 0;
+  }
+}
+function startRecitation() {
       currentSurah = parseInt(document.getElementById("surah-picker").value);
       selectedReciter = document.getElementById("reciter-picker").value;
       currentAyah = parseInt(document.getElementById("ayah-picker").value);
@@ -299,7 +308,6 @@ function toggleAudio() {
           playAyah(currentSurah, currentAyah);
         });
     }
-
     function updateProgress(finished = false) {
       const progressBar = document.getElementById("progress-bar");
       const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
