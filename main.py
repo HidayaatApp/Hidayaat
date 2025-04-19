@@ -25,7 +25,7 @@ def ar_quiz():
     return render_template('ar/quiz.html')
 
 @app.route('/ar/listen')
-def listen():
+def ar_listen():
     return render_template('ar/listen.html')
 
 
