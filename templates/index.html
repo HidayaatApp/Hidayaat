@@ -1,23 +1,60 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <title>Quran Learning APP</title>
+  <title>Quran Learning App</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
-      text-align: center;
-      padding: 60px;
-      direction: rtl;
+      margin: 0;
+      padding: 0;
       color: white;
     }
 
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #1abc9c;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 22px;
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.2);
+      color: #1abc9c;
+    }
+
     h1 {
-      font-size: 38px;
-      color: #ffffff;
-      margin-bottom: 50px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      font-size: 40px;
+      margin: 60px 0 20px;
+      text-align: center;
+      text-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
     }
 
     .menu {
@@ -25,10 +62,12 @@
       flex-direction: column;
       align-items: center;
       gap: 25px;
+      padding: 0 20px;
     }
 
     .menu a {
       display: inline-block;
+        text-align: center;
       padding: 20px 40px;
       min-width: 280px;
       background-color: #1abc9c;
@@ -43,26 +82,49 @@
 
     .menu a:hover {
       background-color: #16a085;
-      transform: scale(1.05);
+      transform: translateY(-4px) scale(1.03);
     }
 
     footer {
       margin-top: 60px;
+      text-align: center;
       color: #ccc;
       font-size: 14px;
+      padding: 20px;
     }
   </style>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <h1>Welcome to the Quran Learning App</h1>
+  <header>
+    <div class="header-title">Quran Learning App</div> <!-- TODO: Change name -->
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleLanguage()" title="Switch Language">
+        🌐
+      </button>
+      <button class="icon-btn" onclick="location.href='/login'" title="Login / Sign Up">
+        <i class="fas fa-user-circle"></i>
+      </button>
+    </div>
+  </header>
+
+  <h1>Welcome to Hidayati</h1> <!-- TODO: Tagline -->
 
   <div class="menu">
     <a href="/quiz">Ayah Test</a>
     <a href="/listen">Listen to the Quran</a>
   </div>
 
-  <footer></footer>
+  <footer>
+    &copy; 2025 Hidayati. All rights reserved.
+  </footer>
 
+  <script>
+function toggleLanguage() {
+  window.location.href = "/ar/";
+}
+  </script>
 </body>
 </html>
