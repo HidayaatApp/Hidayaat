@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hidayaat - Quran Learning App</title> <!-- TODO: replace -->
+  <title>Hidayaat - Quran Learning App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       --primary: #1abc9c;
@@ -33,6 +33,26 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .burger {
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--primary-dark);
+      padding: 8px;
+      border-radius: 50%;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .burger:hover {
+      background-color: rgba(28, 28, 45, 0.1);
+      transform: scale(1.1);
     }
 
     .header-title {
@@ -157,6 +177,55 @@
       transform: translateY(-3px);
     }
 
+    /* Sidebar styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 250px;
+      height: 100%;
+      background-color: white;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 1100;
+      transition: left 0.8s ease;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar a:hover {
+      color: var(--primary);
+    }
+
+    .close-sidebar {
+      align-self: flex-end;
+      font-size: 24px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+        color: var(--text-light);
+
+    }
+
+    .close-sidebar:hover {
+        color: var(--text-dark);
+      transform: scale(1.1);
+    }
+
     @media (max-width: 600px) {
       .menu a {
         width: 90%;
@@ -171,7 +240,10 @@
 <body>
 
   <header>
-    <div class="header-title">Hidayaat</div>
+    <div class="header-left">
+      <i class="fas fa-bars burger" id="openSidebar"></i>
+      <div class="header-title">Hidayaat</div>
+    </div>
     <div class="header-actions">
       <div class="custom-select">
         <div class="custom-select-btn" id="lang-btn">English <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
@@ -181,10 +253,19 @@
         </div>
       </div>
       <button class="icon-btn" onclick="location.href='/login'">
-        <i class="fas fa-sign-in-alt"></i> Login
+        <i class="fas fa-sign-in-alt"></i> Login/Register
       </button>
     </div>
   </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></div>
+    <a href="/">Home</a>
+    <a href="/quiz">Ayah Test</a>
+    <a href="/listen">Listen to Quran</a>
+    <a href="/about">About</a>
+  </div>
 
   <main>
     <h1>Welcome to Hidayaat</h1>
@@ -208,18 +289,30 @@
         const lang = option.getAttribute('data-lang');
         langBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
         langOptions.classList.remove('active');
-
-        if (lang === 'ar') {
-          window.location.href = '/ar/';
-        } else {
-          window.location.href = '/';
-        }
+        window.location.href = lang === 'ar' ? '/ar/' : '/';
       });
     });
 
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.custom-select')) {
         langOptions.classList.remove('active');
+      }
+    });
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    document.getElementById('openSidebar').addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+
+    document.getElementById('closeSidebar').addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+
+    // Optional: close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#sidebar') && !e.target.closest('#openSidebar')) {
+        sidebar.classList.remove('active');
       }
     });
   </script>
