@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <title>آية عشوائية من القرآن</title>
+  <title>Random Quran Verse</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -128,30 +128,30 @@
 </head>
 <body>
 
-  <h1>📖 آية عشوائية من القرآن الكريم</h1>
+  <h1>📖 Random Quran Verse</h1>
 
-  <button class="main-btn" onclick="getRandomAyah()">احصل على آية</button>
+  <button class="main-btn" onclick="getRandomAyah()">Get Verse</button>
 
   <div id="verse-container">
     <div id="ayah"></div>
 
-    <label for="reciter-select">اختر القارئ:</label><br>
+    <label for="reciter-select">Choose Reciter:</label><br>
     <select id="reciter-select" onchange="onReciterChange()">
-      <option value="Dossary">الدوسري</option>
-      <option value="Husary">الحصري</option>
-      <option value="Alafasy">العفاسي</option>
+      <option value="Dossary">Dossary</option>
+      <option value="Husary">Husary</option>
+      <option value="Alafasy">Alafasy</option>
     </select>
 
     <div id="audio-controls" style="margin-top: 15px;">
-      <button id="toggle-audio" onclick="toggleAudio()">▶️ تشغيل التلاوة</button>
+      <button id="toggle-audio" onclick="toggleAudio()">▶️ Play Recitation</button>
     </div>
     <audio id="recitation" preload="auto" style="display: none;"></audio>
 
     <div id="answer-section">
-      <p>من أي سورة هذه الآية؟</p>
-      <input type="text" id="surah-input" placeholder="اكتب اسم السورة..."><br>
-      <button class="green-btn" onclick="checkAnswer()">تحقق من الإجابة</button>
-      <button class="gray-btn" id="show-answer-btn" onclick="showAnswer()" style="display:none;">عرض الإجابة</button>
+      <p>Which Surah is this verse from?</p>
+      <input type="text" id="surah-input" placeholder="Enter the name of the Surah..."><br>
+      <button class="green-btn" onclick="checkAnswer()">Check Answer</button>
+      <button class="gray-btn" id="show-answer-btn" onclick="showAnswer()" style="display:none;">Show Answer</button>
       <div id="feedback"></div>
     </div>
 
@@ -206,7 +206,7 @@
         document.getElementById("surah").style.display = "none";
         document.getElementById("feedback").innerText = "";
         document.getElementById("surah-input").value = "";
-        document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+        document.getElementById("toggle-audio").innerText = "▶️ Play Recitation";
 
         const surahStr = String(surah.number).padStart(3, '0');
         const ayahStr = String(ayahNum).padStart(3, '0');
@@ -226,20 +226,20 @@
         audio.load();
 
         audio.onended = () => {
-          document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+          document.getElementById("toggle-audio").innerText = "▶️ Play Recitation";
         };
 
         audio.onerror = () => {
-          document.getElementById("feedback").innerText = `🔇 لم تتوفر التلاوة لهذه الآية مع ${reciter}.`;
+          document.getElementById("feedback").innerText = `🔇 Recitation not available for this verse with ${reciter}.`;
           document.getElementById("feedback").style.color = "orange";
         };
 
         currentSurahEnglish = surah.englishName.toLowerCase().replace(/-/g, ' ');
         currentSurahArabic = surah.name;
-        document.getElementById("surah").innerText = `السورة: ${surah.name} - الآية: ${ayahNum}`;
+        document.getElementById("surah").innerText = `Surah: ${surah.name} - Ayah: ${ayahNum}`;
 
       } catch (error) {
-        console.error(" حدث خطأ أثناء تحميل الآية أو التلاوة:", error);
+        console.error("Error fetching ayah or audio:", error);
       }
     }
 
@@ -249,13 +249,13 @@
 
       if (audio.paused || audio.ended) {
         audio.play().then(() => {
-          button.innerText = "⏸️ إيقاف التلاوة";
+          button.innerText = "⏸️ Pause Recitation";
         }).catch(err => {
           console.error("Audio play error:", err);
         });
       } else {
         audio.pause();
-        button.innerText = "▶️ تشغيل التلاوة";
+        button.innerText = "▶️ Play Recitation";
       }
     }
 
@@ -263,7 +263,7 @@
       const audio = document.getElementById("recitation");
       audio.pause();
       audio.currentTime = 0;
-      document.getElementById("toggle-audio").innerText = "▶️ تشغيل التلاوة";
+      document.getElementById("toggle-audio").innerText = "▶️ Play Recitation";
     }
 
     function onReciterChange() {
@@ -296,7 +296,7 @@
       const feedback = document.getElementById("feedback");
 
       if (!userGuessRaw) {
-        feedback.innerText = " من فضلك أدخل اسم السورة.";
+        feedback.innerText = "Please enter a Surah name.";
         feedback.style.color = "orange";
         return;
       }
@@ -313,12 +313,12 @@
         similarity(userGuessArabic, expectedArabic) >= threshold;
 
       if (isCorrect) {
-        feedback.innerText = " إجابة صحيحة!";
+        feedback.innerText = "✅ Correct answer!";
         feedback.style.color = "green";
         document.getElementById("show-answer-btn").style.display = "none";
         setTimeout(() => getRandomAyah(), 1000);
       } else {
-        feedback.innerText = " إجابة خاطئة، حاول مرة أخرى.";
+        feedback.innerText = "❌ Incorrect answer. Try again.";
         feedback.style.color = "red";
         document.getElementById("show-answer-btn").style.display = "inline-block";
       }

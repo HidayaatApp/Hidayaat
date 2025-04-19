@@ -1,248 +1,245 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <title>تلاوة السورة - آية بآية</title>
+  <title>Surah Recitation - Ayah by Ayah</title>
   <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
-    color: #fff;
-    text-align: center;
-    padding: 40px;
-    margin: 0;
-  }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
 
-  h1 {
-    font-size: 32px;
-    color: #ff4c4c;
-    margin-bottom: 30px;
-  }
+    h1 {
+      font-size: 32px;
+      color: #ff4c4c;
+      margin-bottom: 30px;
+    }
 
-  select, button {
-    padding: 12px;
-    font-size: 18px;
-    margin: 10px;
-    border-radius: 8px;
-    border: none;
-  }
+    select, button {
+      padding: 12px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
 
-  select {
-    background-color: #eeeeee;
-    color: #000;
-  }
+    select {
+      background-color: #eeeeee;
+      color: #000;
+    }
 
-  button {
-    background-color: #388e3c;
-    color: white;
-    cursor: pointer;
-  }
+    button {
+      background-color: #388e3c;
+      color: white;
+      cursor: pointer;
+    }
 
-  button:hover {
-    background-color: #2e7d32;
-  }
+    button:hover {
+      background-color: #2e7d32;
+    }
 
-  #ayah-text {
-    font-size: 30px;
-    color: #ffffff;
-    margin-top: 35px;
-    padding: 25px;
-    background-color: #111827;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    line-height: 2.2;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    transition: opacity 0.5s ease;
-  }
+    #ayah-text {
+      font-size: 30px;
+      color: #ffffff;
+      margin-top: 35px;
+      padding: 25px;
+      background-color: #111827;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      line-height: 2.2;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: opacity 0.5s ease;
+    }
 
-  #info {
-    margin-top: 25px;
-    font-size: 22px;
-    color: #cccccc;
-    transition: opacity 0.5s ease;
-  }
+    #info {
+      margin-top: 25px;
+      font-size: 22px;
+      color: #cccccc;
+      transition: opacity 0.5s ease;
+    }
 
-  .progress-container {
-    width: 80%;
-    height: 20px;
-    background-color: #444;
-    border-radius: 10px;
-    margin: 40px auto 20px;
-    overflow: hidden;
-  }
+    .progress-container {
+      width: 80%;
+      height: 20px;
+      background-color: #444;
+      border-radius: 10px;
+      margin: 40px auto 20px;
+      overflow: hidden;
+    }
 
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #4caf50;
-    transition: width 0.5s ease;
-  }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #4caf50;
+      transition: width 0.5s ease;
+    }
 
-  audio {
-  display: block;
-  margin: 30px auto 0 auto;
-  width: 80%;
-  max-width: 700px;
-}
+    audio {
+      display: block;
+      margin: 30px auto 0 auto;
+      width: 80%;
+      max-width: 700px;
+    }
 
-
-  footer {
-    margin-top: 60px;
-    font-size: 14px;
-    color: #aaa;
-  }
-</style>
-
-
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>🔊 تلاوة السورة - آية بآية</h1>
+  <h1>🔊 Surah Recitation - Ayah by Ayah</h1>
 
   <div>
-    <label for="reciter-picker">اختر القارئ:</label>
+    <label for="reciter-picker">Reciter:</label>
     <select id="reciter-picker">
-      <option value="Alafasy">العفاسي</option>
-      <option value="Dossary">الدوسري</option>
-      <option value="Husary">الحصري</option>
+      <option value="Alafasy">Alafasy</option>
+      <option value="Dossary">Dossary</option>
+      <option value="Husary">Husary</option>
     </select>
 
-    <label for="surah-picker">اختر السورة:</label>
+    <label for="surah-picker">Surah:</label>
     <select id="surah-picker" onchange="populateAyahPicker()">
-      <option value="1">الفاتحة</option>
-      <option value="2">البقرة</option>
-      <option value="3">آل عمران</option>
-      <option value="4">النساء</option>
-      <option value="5">المائدة</option>
-      <option value="6">الأنعام</option>
-      <option value="7">الأعراف</option>
-      <option value="8">الأنفال</option>
-      <option value="9">التوبة</option>
-      <option value="10">يونس</option>
-      <option value="11">هود</option>
-      <option value="12">يوسف</option>
-      <option value="13">الرعد</option>
-      <option value="14">إبراهيم</option>
-      <option value="15">الحجر</option>
-      <option value="16">النحل</option>
-      <option value="17">الإسراء</option>
-      <option value="18">الكهف</option>
-      <option value="19">مريم</option>
-      <option value="20">طه</option>
-      <option value="21">الأنبياء</option>
-      <option value="22">الحج</option>
-      <option value="23">المؤمنون</option>
-      <option value="24">النور</option>
-      <option value="25">الفرقان</option>
-      <option value="26">الشعراء</option>
-      <option value="27">النمل</option>
-      <option value="28">القصص</option>
-      <option value="29">العنكبوت</option>
-      <option value="30">الروم</option>
-      <option value="31">لقمان</option>
-      <option value="32">السجدة</option>
-      <option value="33">الأحزاب</option>
-      <option value="34">سبإ</option>
-      <option value="35">فاطر</option>
-      <option value="36">يس</option>
-      <option value="37">الصافات</option>
-      <option value="38">ص</option>
-      <option value="39">الزمر</option>
-      <option value="40">غافر</option>
-      <option value="41">فصلت</option>
-      <option value="42">الشورى</option>
-      <option value="43">الزخرف</option>
-      <option value="44">الدخان</option>
-      <option value="45">الجاثية</option>
-      <option value="46">الأحقاف</option>
-      <option value="47">محمد</option>
-      <option value="48">الفتح</option>
-      <option value="49">الحجرات</option>
-      <option value="50">ق</option>
-      <option value="51">الذاريات</option>
-      <option value="52">الطور</option>
-      <option value="53">النجم</option>
-      <option value="54">القمر</option>
-      <option value="55">الرحمن</option>
-      <option value="56">الواقعة</option>
-      <option value="57">الحديد</option>
-      <option value="58">المجادلة</option>
-      <option value="59">الحشر</option>
-      <option value="60">الممتحنة</option>
-      <option value="61">الصف</option>
-      <option value="62">الجمعة</option>
-      <option value="63">المنافقون</option>
-      <option value="64">التغابن</option>
-      <option value="65">الطلاق</option>
-      <option value="66">التحريم</option>
-      <option value="67">الملك</option>
-      <option value="68">القلم</option>
-      <option value="69">الحاقة</option>
-      <option value="70">المعارج</option>
-      <option value="71">نوح</option>
-      <option value="72">الجن</option>
-      <option value="73">المزمل</option>
-      <option value="74">المدثر</option>
-      <option value="75">القيامة</option>
-      <option value="76">الإنسان</option>
-      <option value="77">المرسلات</option>
-      <option value="78">النبأ</option>
-      <option value="79">النازعات</option>
-      <option value="80">عبس</option>
-      <option value="81">التكوير</option>
-      <option value="82">الانفطار</option>
-      <option value="83">المطففين</option>
-      <option value="84">الانشقاق</option>
-      <option value="85">البروج</option>
-      <option value="86">الطارق</option>
-      <option value="87">الأعلى</option>
-      <option value="88">الغاشية</option>
-      <option value="89">الفجر</option>
-      <option value="90">البلد</option>
-      <option value="91">الشمس</option>
-      <option value="92">الليل</option>
-      <option value="93">الضحى</option>
-      <option value="94">الشرح</option>
-      <option value="95">التين</option>
-      <option value="96">العلق</option>
-      <option value="97">القدر</option>
-      <option value="98">البينة</option>
-      <option value="99">الزلزلة</option>
-      <option value="100">العاديات</option>
-      <option value="101">القارعة</option>
-      <option value="102">التكاثر</option>
-      <option value="103">العصر</option>
-      <option value="104">الهمزة</option>
-      <option value="105">الفيل</option>
-      <option value="106">قريش</option>
-      <option value="107">الماعون</option>
-      <option value="108">الكوثر</option>
-      <option value="109">الكافرون</option>
-      <option value="110">النصر</option>
-      <option value="111">المسد</option>
-      <option value="112">الإخلاص</option>
-      <option value="113">الفلق</option>
-      <option value="114">الناس</option>
+        <option value="1">Al-Fatiha</option>
+        <option value="2">Al-Baqarah</option>
+        <option value="3">Aali-Imran</option>
+        <option value="4">An-Nisa</option>
+        <option value="5">Al-Maidah</option>
+        <option value="6">Al-An'am</option>
+        <option value="7">Al-A'raf</option>
+        <option value="8">Al-Anfal</option>
+        <option value="9">At-Tawbah</option>
+        <option value="10">Yunus</option>
+        <option value="11">Hud</option>
+        <option value="12">Yusuf</option>
+        <option value="13">Ar-Ra'd</option>
+        <option value="14">Ibrahim</option>
+        <option value="15">Al-Hijr</option>
+        <option value="16">An-Nahl</option>
+        <option value="17">Al-Isra</option>
+        <option value="18">Al-Kahf</option>
+        <option value="19">Maryam</option>
+        <option value="20">Ta-Ha</option>
+        <option value="21">Al-Anbiya</option>
+        <option value="22">Al-Hajj</option>
+        <option value="23">Al-Mu'minun</option>
+        <option value="24">An-Nur</option>
+        <option value="25">Al-Furqan</option>
+        <option value="26">Ash-Shu'ara</option>
+        <option value="27">An-Naml</option>
+        <option value="28">Al-Qasas</option>
+        <option value="29">Al-Ankabut</option>
+        <option value="30">Ar-Rum</option>
+        <option value="31">Luqman</option>
+        <option value="32">As-Sajda</option>
+        <option value="33">Al-Ahzab</option>
+        <option value="34">Saba</option>
+        <option value="35">Fatir</option>
+        <option value="36">Ya-Sin</option>
+        <option value="37">As-Saffat</option>
+        <option value="38">Sad</option>
+        <option value="39">Az-Zumar</option>
+        <option value="40">Ghafir</option>
+        <option value="41">Fussilat</option>
+        <option value="42">Ash-Shura</option>
+        <option value="43">Az-Zukhruf</option>
+        <option value="44">Ad-Dukhan</option>
+        <option value="45">Al-Jathiyah</option>
+        <option value="46">Al-Ahqaf</option>
+        <option value="47">Muhammad</option>
+        <option value="48">Al-Fath</option>
+        <option value="49">Al-Hujurat</option>
+        <option value="50">Qaf</option>
+        <option value="51">Adh-Dhariyat</option>
+        <option value="52">At-Tur</option>
+        <option value="53">An-Najm</option>
+        <option value="54">Al-Qamar</option>
+        <option value="55">Ar-Rahman</option>
+        <option value="56">Al-Waqi'a</option>
+        <option value="57">Al-Hadid</option>
+        <option value="58">Al-Mujadila</option>
+        <option value="59">Al-Hashr</option>
+        <option value="60">Al-Mumtahina</option>
+        <option value="61">As-Saff</option>
+        <option value="62">Al-Jumua</option>
+        <option value="63">Al-Munafiqun</option>
+        <option value="64">At-Taghabun</option>
+        <option value="65">At-Talaq</option>
+        <option value="66">At-Tahrim</option>
+        <option value="67">Al-Mulk</option>
+        <option value="68">Al-Qalam</option>
+        <option value="69">Al-Haqqah</option>
+        <option value="70">Al-Ma'arij</option>
+        <option value="71">Nuh</option>
+        <option value="72">Al-Jinn</option>
+        <option value="73">Al-Muzzammil</option>
+        <option value="74">Al-Muddaththir</option>
+        <option value="75">Al-Qiyamah</option>
+        <option value="76">Al-Insan</option>
+        <option value="77">Al-Mursalat</option>
+        <option value="78">An-Naba</option>
+        <option value="79">An-Nazi'at</option>
+        <option value="80">'Abasa</option>
+        <option value="81">At-Takwir</option>
+        <option value="82">Al-Infitar</option>
+        <option value="83">Al-Mutaffifin</option>
+        <option value="84">Al-Inshiqaq</option>
+        <option value="85">Al-Buruj</option>
+        <option value="86">At-Tariq</option>
+        <option value="87">Al-A'la</option>
+        <option value="88">Al-Ghashiyah</option>
+        <option value="89">Al-Fajr</option>
+        <option value="90">Al-Balad</option>
+        <option value="91">Ash-Shams</option>
+        <option value="92">Al-Layl</option>
+        <option value="93">Ad-Duhaa</option>
+        <option value="94">Ash-Sharh</option>
+        <option value="95">At-Tin</option>
+        <option value="96">Al-Alaq</option>
+        <option value="97">Al-Qadr</option>
+        <option value="98">Al-Bayyina</option>
+        <option value="99">Az-Zalzalah</option>
+        <option value="100">Al-Adiyat</option>
+        <option value="101">Al-Qari'ah</option>
+        <option value="102">At-Takathur</option>
+        <option value="103">Al-Asr</option>
+        <option value="104">Al-Humazah</option>
+        <option value="105">Al-Fil</option>
+        <option value="106">Quraysh</option>
+        <option value="107">Al-Ma'un</option>
+        <option value="108">Al-Kawthar</option>
+        <option value="109">Al-Kafirun</option>
+        <option value="110">An-Nasr</option>
+        <option value="111">Al-Masad</option>
+        <option value="112">Al-Ikhlas</option>
+        <option value="113">Al-Falaq</option>
+        <option value="114">An-Nas</option>
+
     </select>
 
-    <label for="ayah-picker">اختر الآية للبدء:</label>
+    <label for="ayah-picker">Start from Ayah:</label>
     <select id="ayah-picker">
-      <option value="1">١</option>
+      <option value="1">1</option>
     </select>
   </div>
 
-  <button onclick="startRecitation()">▶️ ابدأ التلاوة</button>
+  <button onclick="startRecitation()">▶️ Start Recitation</button>
 
   <div id="ayah-text">—</div>
   <div id="info">—</div>
   <audio id="audio" controls></audio>
 
   <div class="progress-container">
-  <div id="progress-bar" class="progress-bar"></div>
-</div>
-
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
 
   <footer></footer>
 
@@ -273,19 +270,18 @@
         .then(res => res.json())
         .then(data => {
           totalAyahs = data.data.numberOfAyahs;
-          surahName = data.data.name;
-          document.getElementById("info").innerText = `${surahName} ${surahName} - الآية ${currentAyah}`;
+          surahName = data.data.englishName;
+          document.getElementById("info").innerText = `${surahName} - Ayah ${currentAyah}`;
           updateProgress();
           playAyah(currentSurah, currentAyah);
         });
     }
+
     function updateProgress(finished = false) {
-  const progressBar = document.getElementById("progress-bar");
-  const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
-  progressBar.style.width = progress + "%";
-}
-
-
+      const progressBar = document.getElementById("progress-bar");
+      const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
+      progressBar.style.width = progress + "%";
+    }
 
     function playAyah(surah, ayah) {
       const audio = document.getElementById("audio");
@@ -293,7 +289,7 @@
       const info = document.getElementById("info");
       updateProgress();
 
-      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`)
+      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
         .then(res => res.json())
         .then(data => {
           ayahText.style.opacity = 0;
@@ -301,7 +297,7 @@
 
           setTimeout(() => {
             ayahText.innerText = data.data.text;
-            info.innerText = `سورة ${surahName} - الآية ${ayah}`;
+            info.innerText = `${surahName} - Ayah ${ayah}`;
             ayahText.style.opacity = 1;
             info.style.opacity = 1;
           }, 200);
@@ -336,7 +332,7 @@
               playAyah(surah, currentAyah);
             } else {
               updateProgress(true);
-              info.innerText = `انتهت تلاوة سورة ${surahName}`;
+              info.innerText = `✅ Finished reciting Surah ${surahName}`;
             }
           };
         });
