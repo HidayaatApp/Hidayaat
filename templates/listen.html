@@ -284,59 +284,65 @@
     }
 
     function playAyah(surah, ayah) {
-      const audio = document.getElementById("audio");
-      const ayahText = document.getElementById("ayah-text");
-      const info = document.getElementById("info");
-      updateProgress();
+  const audio = document.getElementById("audio");
+  const ayahText = document.getElementById("ayah-text");
+  const info = document.getElementById("info");
+  updateProgress();
 
-      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
-        .then(res => res.json())
-        .then(data => {
-          ayahText.style.opacity = 0;
-          info.style.opacity = 0;
+  Promise.all([
+    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`),
+    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
+  ])
+    .then(responses => Promise.all(responses.map(res => res.json())))
+    .then(([arabicData, englishData]) => {
+      ayahText.style.opacity = 0;
+      info.style.opacity = 0;
 
-          setTimeout(() => {
-            ayahText.innerText = data.data.text;
-            info.innerText = `${surahName} - Ayah ${ayah}`;
-            ayahText.style.opacity = 1;
-            info.style.opacity = 1;
-          }, 200);
+      setTimeout(() => {
+        ayahText.innerHTML = `
+          <div style="font-size: 30px; direction: rtl; margin-bottom: 20px;">${arabicData.data.text}</div>
+          <div style="font-size: 20px; direction: ltr; color: #ccc;">${englishData.data.text}</div>
+        `;
+        info.innerText = `${surahName} - Ayah ${ayah}`;
+        ayahText.style.opacity = 1;
+        info.style.opacity = 1;
+      }, 200);
 
-          const surahStr = String(surah).padStart(3, '0');
-          const ayahStr = String(ayah).padStart(3, '0');
+      const surahStr = String(surah).padStart(3, '0');
+      const ayahStr = String(ayah).padStart(3, '0');
 
-          if (selectedReciter === "Alafasy") {
-            fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.alafasy`)
-              .then(res => res.json())
-              .then(alafasyData => {
-                audio.src = alafasyData.data.audio;
-                audio.load();
-                audio.style.display = "block";
-                audio.play();
-              });
-          } else {
-            const folder = selectedReciter === "Dossary"
-              ? "Yasser_Ad-Dussary_128kbps"
-              : "Husary_128kbps";
-
-            const audioURL = `https://everyayah.com/data/${folder}/${surahStr}${ayahStr}.mp3`;
-            audio.src = audioURL;
+      if (selectedReciter === "Alafasy") {
+        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.alafasy`)
+          .then(res => res.json())
+          .then(alafasyData => {
+            audio.src = alafasyData.data.audio;
             audio.load();
             audio.style.display = "block";
             audio.play();
-          }
+          });
+      } else {
+        const folder = selectedReciter === "Dossary"
+          ? "Yasser_Ad-Dussary_128kbps"
+          : "Husary_128kbps";
 
-          audio.onended = () => {
-            if (ayah < totalAyahs) {
-              currentAyah++;
-              playAyah(surah, currentAyah);
-            } else {
-              updateProgress(true);
-              info.innerText = `✅ Finished reciting Surah ${surahName}`;
-            }
-          };
-        });
-    }
+        const audioURL = `https://everyayah.com/data/${folder}/${surahStr}${ayahStr}.mp3`;
+        audio.src = audioURL;
+        audio.load();
+        audio.style.display = "block";
+        audio.play();
+      }
+
+      audio.onended = () => {
+        if (ayah < totalAyahs) {
+          currentAyah++;
+          playAyah(surah, currentAyah);
+        } else {
+          updateProgress(true);
+          info.innerText = `✅ Finished reciting Surah ${surahName}`;
+        }
+      };
+    });
+}
 
     window.onload = populateAyahPicker;
   </script>
