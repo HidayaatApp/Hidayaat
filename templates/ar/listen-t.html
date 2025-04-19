@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تلاوة السورة - آية بآية</title>
+  <style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
+    color: #fff;
+    text-align: center;
+    padding: 40px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 32px;
+    color: #ff4c4c;
+    margin-bottom: 30px;
+  }
+
+  select, button {
+    padding: 12px;
+    font-size: 18px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+  }
+
+  select {
+    background-color: #eeeeee;
+    color: #000;
+  }
+
+  button {
+    background-color: #388e3c;
+    color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #2e7d32;
+  }
+
+  #ayah-text {
+    font-size: 30px;
+    color: #ffffff;
+    margin-top: 35px;
+    padding: 25px;
+    background-color: #111827;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    line-height: 2.2;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: opacity 0.5s ease;
+  }
+
+  #info {
+    margin-top: 25px;
+    font-size: 22px;
+    color: #cccccc;
+    transition: opacity 0.5s ease;
+  }
+
+  .progress-container {
+    width: 80%;
+    height: 20px;
+    background-color: #444;
+    border-radius: 10px;
+    margin: 40px auto 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    transition: width 0.5s ease;
+  }
+
+  audio {
+  display: block;
+  margin: 30px auto 0 auto;
+  width: 80%;
+  max-width: 700px;
+}
+
+
+  footer {
+    margin-top: 60px;
+    font-size: 14px;
+    color: #aaa;
+  }
+</style>
+
+
+</head>
+<body>
+
+  <h1>🔊 تلاوة السورة - آية بآية</h1>
+
+  <div>
+    <label for="reciter-picker">اختر القارئ:</label>
+    <select id="reciter-picker">
+      <option value="Alafasy">العفاسي</option>
+      <option value="Dossary">الدوسري</option>
+      <option value="Husary">الحصري</option>
+    </select>
+
+    <label for="surah-picker">اختر السورة:</label>
+    <select id="surah-picker" onchange="populateAyahPicker()">
+      <option value="1">الفاتحة</option>
+      <option value="2">البقرة</option>
+      <option value="3">آل عمران</option>
+      <option value="4">النساء</option>
+      <option value="5">المائدة</option>
+      <option value="6">الأنعام</option>
+      <option value="7">الأعراف</option>
+      <option value="8">الأنفال</option>
+      <option value="9">التوبة</option>
+      <option value="10">يونس</option>
+      <option value="11">هود</option>
+      <option value="12">يوسف</option>
+      <option value="13">الرعد</option>
+      <option value="14">إبراهيم</option>
+      <option value="15">الحجر</option>
+      <option value="16">النحل</option>
+      <option value="17">الإسراء</option>
+      <option value="18">الكهف</option>
+      <option value="19">مريم</option>
+      <option value="20">طه</option>
+      <option value="21">الأنبياء</option>
+      <option value="22">الحج</option>
+      <option value="23">المؤمنون</option>
+      <option value="24">النور</option>
+      <option value="25">الفرقان</option>
+      <option value="26">الشعراء</option>
+      <option value="27">النمل</option>
+      <option value="28">القصص</option>
+      <option value="29">العنكبوت</option>
+      <option value="30">الروم</option>
+      <option value="31">لقمان</option>
+      <option value="32">السجدة</option>
+      <option value="33">الأحزاب</option>
+      <option value="34">سبإ</option>
+      <option value="35">فاطر</option>
+      <option value="36">يس</option>
+      <option value="37">الصافات</option>
+      <option value="38">ص</option>
+      <option value="39">الزمر</option>
+      <option value="40">غافر</option>
+      <option value="41">فصلت</option>
+      <option value="42">الشورى</option>
+      <option value="43">الزخرف</option>
+      <option value="44">الدخان</option>
+      <option value="45">الجاثية</option>
+      <option value="46">الأحقاف</option>
+      <option value="47">محمد</option>
+      <option value="48">الفتح</option>
+      <option value="49">الحجرات</option>
+      <option value="50">ق</option>
+      <option value="51">الذاريات</option>
+      <option value="52">الطور</option>
+      <option value="53">النجم</option>
+      <option value="54">القمر</option>
+      <option value="55">الرحمن</option>
+      <option value="56">الواقعة</option>
+      <option value="57">الحديد</option>
+      <option value="58">المجادلة</option>
+      <option value="59">الحشر</option>
+      <option value="60">الممتحنة</option>
+      <option value="61">الصف</option>
+      <option value="62">الجمعة</option>
+      <option value="63">المنافقون</option>
+      <option value="64">التغابن</option>
+      <option value="65">الطلاق</option>
+      <option value="66">التحريم</option>
+      <option value="67">الملك</option>
+      <option value="68">القلم</option>
+      <option value="69">الحاقة</option>
+      <option value="70">المعارج</option>
+      <option value="71">نوح</option>
+      <option value="72">الجن</option>
+      <option value="73">المزمل</option>
+      <option value="74">المدثر</option>
+      <option value="75">القيامة</option>
+      <option value="76">الإنسان</option>
+      <option value="77">المرسلات</option>
+      <option value="78">النبأ</option>
+      <option value="79">النازعات</option>
+      <option value="80">عبس</option>
+      <option value="81">التكوير</option>
+      <option value="82">الانفطار</option>
+      <option value="83">المطففين</option>
+      <option value="84">الانشقاق</option>
+      <option value="85">البروج</option>
+      <option value="86">الطارق</option>
+      <option value="87">الأعلى</option>
+      <option value="88">الغاشية</option>
+      <option value="89">الفجر</option>
+      <option value="90">البلد</option>
+      <option value="91">الشمس</option>
+      <option value="92">الليل</option>
+      <option value="93">الضحى</option>
+      <option value="94">الشرح</option>
+      <option value="95">التين</option>
+      <option value="96">العلق</option>
+      <option value="97">القدر</option>
+      <option value="98">البينة</option>
+      <option value="99">الزلزلة</option>
+      <option value="100">العاديات</option>
+      <option value="101">القارعة</option>
+      <option value="102">التكاثر</option>
+      <option value="103">العصر</option>
+      <option value="104">الهمزة</option>
+      <option value="105">الفيل</option>
+      <option value="106">قريش</option>
+      <option value="107">الماعون</option>
+      <option value="108">الكوثر</option>
+      <option value="109">الكافرون</option>
+      <option value="110">النصر</option>
+      <option value="111">المسد</option>
+      <option value="112">الإخلاص</option>
+      <option value="113">الفلق</option>
+      <option value="114">الناس</option>
+    </select>
+
+    <label for="ayah-picker">اختر الآية للبدء:</label>
+    <select id="ayah-picker">
+      <option value="1">١</option>
+    </select>
+  </div>
+
+  <button onclick="startRecitation()">▶️ ابدأ التلاوة</button>
+
+  <div id="ayah-text">—</div>
+  <div id="info">—</div>
+  <audio id="audio" controls></audio>
+
+  <div class="progress-container">
+  <div id="progress-bar" class="progress-bar"></div>
+</div>
+
+
+  <footer></footer>
+
+  <script>
+    let currentAyah = 1;
+    let totalAyahs = 0;
+    let currentSurah = 1;
+    let surahName = "";
+    let selectedReciter = "Alafasy";
+
+    function populateAyahPicker() {
+      const surahId = document.getElementById("surah-picker").value;
+      fetch(`https://api.alquran.cloud/v1/surah/${surahId}`).then(res => res.json()).then(data => {
+        const ayahPicker = document.getElementById("ayah-picker");
+        ayahPicker.innerHTML = "";
+        for (let i = 1; i <= data.data.numberOfAyahs; i++) {
+          ayahPicker.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+      });
+    }
+
+    function startRecitation() {
+      currentSurah = parseInt(document.getElementById("surah-picker").value);
+      selectedReciter = document.getElementById("reciter-picker").value;
+      currentAyah = parseInt(document.getElementById("ayah-picker").value);
+
+      fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}`)
+        .then(res => res.json())
+        .then(data => {
+          totalAyahs = data.data.numberOfAyahs;
+          surahName = data.data.name;
+          document.getElementById("info").innerText = `${surahName} ${surahName} - الآية ${currentAyah}`;
+          updateProgress();
+          playAyah(currentSurah, currentAyah);
+        });
+    }
+    function updateProgress(finished = false) {
+  const progressBar = document.getElementById("progress-bar");
+  const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
+  progressBar.style.width = progress + "%";
+}
+
+
+
+    function playAyah(surah, ayah) {
+      const audio = document.getElementById("audio");
+      const ayahText = document.getElementById("ayah-text");
+      const info = document.getElementById("info");
+      updateProgress();
+
+      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`)
+        .then(res => res.json())
+        .then(data => {
+          ayahText.style.opacity = 0;
+          info.style.opacity = 0;
+
+          setTimeout(() => {
+            ayahText.innerText = data.data.text;
+            info.innerText = `سورة ${surahName} - الآية ${ayah}`;
+            ayahText.style.opacity = 1;
+            info.style.opacity = 1;
+          }, 200);
+
+          const surahStr = String(surah).padStart(3, '0');
+          const ayahStr = String(ayah).padStart(3, '0');
+
+          if (selectedReciter === "Alafasy") {
+            fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.alafasy`)
+              .then(res => res.json())
+              .then(alafasyData => {
+                audio.src = alafasyData.data.audio;
+                audio.load();
+                audio.style.display = "block";
+                audio.play();
+              });
+          } else {
+            const folder = selectedReciter === "Dossary"
+              ? "Yasser_Ad-Dussary_128kbps"
+              : "Husary_128kbps";
+
+            const audioURL = `https://everyayah.com/data/${folder}/${surahStr}${ayahStr}.mp3`;
+            audio.src = audioURL;
+            audio.load();
+            audio.style.display = "block";
+            audio.play();
+          }
+
+          audio.onended = () => {
+            if (ayah < totalAyahs) {
+              currentAyah++;
+              playAyah(surah, currentAyah);
+            } else {
+              updateProgress(true);
+              info.innerText = `انتهت تلاوة سورة ${surahName}`;
+            }
+          };
+        });
+    }
+
+    window.onload = populateAyahPicker;
+  </script>
+</body>
+</html>
