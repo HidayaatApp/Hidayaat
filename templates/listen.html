@@ -4,52 +4,65 @@
   <meta charset="UTF-8">
   <title>Surah Recitation - Ayah by Ayah</title>
   <style>
+    :root {
+      --primary: #1abc9c;
+      --primary-dark: #16a085;
+      --bg: #f7f9fa;
+      --header-bg: #ffffffcc;
+      --text-dark: #2c3e50;
+      --text-light: #6c757d;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #1c1c2d, #2c3e50);
-      color: #fff;
-      text-align: center;
-      padding: 40px;
       margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(90deg, #e2e2e2, #d5fffa);
+      color: var(--text-dark);
+      padding: 40px 20px;
+      text-align: center;
     }
 
     h1 {
       font-size: 32px;
-      color: #ff4c4c;
+      color: var(--primary-dark);
       margin-bottom: 30px;
     }
 
     select, button {
-      padding: 12px;
-      font-size: 18px;
+      padding: 10px 16px;
+      font-size: 16px;
       margin: 10px;
       border-radius: 8px;
-      border: none;
-    }
-
-    select {
-      background-color: #eeeeee;
-      color: #000;
-    }
-
-    button {
-      background-color: #388e3c;
-      color: white;
+      border: 1px solid var(--primary);
+      background-color: white;
+      color: var(--text-dark);
       cursor: pointer;
     }
 
+    select:hover, button:hover {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
     button:hover {
-      background-color: #2e7d32;
+      background-color: var(--primary-dark);
     }
 
     #ayah-text {
       font-size: 30px;
-      color: #ffffff;
+      color: var(--text-dark);
       margin-top: 35px;
       padding: 25px;
-      background-color: #111827;
+      background-color: white;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       line-height: 2.2;
       max-width: 800px;
       margin-left: auto;
@@ -58,16 +71,16 @@
     }
 
     #info {
-      margin-top: 25px;
-      font-size: 22px;
-      color: #cccccc;
+      margin-top: 20px;
+      font-size: 20px;
+      color: var(--text-light);
       transition: opacity 0.5s ease;
     }
 
     .progress-container {
       width: 80%;
       height: 20px;
-      background-color: #444;
+      background-color: #ddd;
       border-radius: 10px;
       margin: 40px auto 20px;
       overflow: hidden;
@@ -76,7 +89,7 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background-color: #4caf50;
+      background-color: var(--primary-dark);
       transition: width 0.5s ease;
     }
 
@@ -90,11 +103,48 @@
     footer {
       margin-top: 60px;
       font-size: 14px;
-      color: #aaa;
+      color: var(--text-light);
     }
+
+    label {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+
+    .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    background: none;
+    border: none;
+    color: #2c3e50; /* matches your theme's text color */
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 6px;
+    transition: color 0.2s ease;
+        text-decoration: none;
+}
+
+.back-button svg {
+    vertical-align: middle;
+}
+
+.back-button:hover {
+    color: var(--primary-dark);
+}
   </style>
 </head>
 <body>
+    <a class="back-button" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <path fill="currentColor" d="m9 19 1.41-1.41L5.83 13H22v-2H5.83l4.59-4.59L9 5l-7 7z"></path>
+        </svg>Back
+    </a>
 
   <h1>🔊 Surah Recitation - Ayah by Ayah</h1>
 
@@ -241,8 +291,6 @@
   <div class="progress-container">
     <div id="progress-bar" class="progress-bar"></div>
   </div>
-
-  <footer></footer>
 
   <script>
     let currentAyah = 1;
