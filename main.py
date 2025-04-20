@@ -15,6 +15,11 @@ def quiz():
 def listen():
     return render_template('listen.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
 # Arabic pages
 @app.route('/ar/')
 def ar_home():
