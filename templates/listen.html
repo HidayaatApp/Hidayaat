@@ -100,14 +100,14 @@
 
   <div>
     <label for="reciter-picker">Reciter:</label>
-    <select id="reciter-picker">
+    <select id="reciter-picker" onchange="handleRecitationChange()">
       <option value="Alafasy">Alafasy</option>
       <option value="Dossary">Dossary</option>
       <option value="Husary">Husary</option>
     </select>
 
     <label for="surah-picker">Surah:</label>
-    <select id="surah-picker" onchange="populateAyahPicker()">
+    <select id="surah-picker" onchange="populateAyahPicker(); handleRecitationChange()">
         <option value="1">Al-Fatiha</option>
         <option value="2">Al-Baqarah</option>
         <option value="3">Aali-Imran</option>
@@ -226,12 +226,13 @@
     </select>
 
     <label for="ayah-picker">Start from Ayah:</label>
-    <select id="ayah-picker">
+    <select id="ayah-picker" onchange="handleRecitationChange()">
       <option value="1">1</option>
     </select>
   </div>
 
-  <button onclick="startRecitation()">▶️ Start Recitation</button>
+  <button id="toggle-audio" onclick="toggleAudio()">▶️ Start Recitation</button>
+
 
   <div id="ayah-text">—</div>
   <div id="info">—</div>
@@ -261,7 +262,38 @@
       });
     }
 
-    function startRecitation() {
+    let isStarted = false;
+let isPaused = false;
+
+function toggleAudio() {
+  const audio = document.getElementById("audio");
+  const toggleBtn = document.getElementById("toggle-audio");
+
+  if (!isStarted) {
+    startRecitation(); // this sets up and begins audio
+    isStarted = true;
+    toggleBtn.innerText = "⏸️ Pause";
+  } else if (isPaused) {
+    audio.play();
+    isPaused = false;
+    toggleBtn.innerText = "⏸️ Pause";
+  } else {
+    audio.pause();
+    isPaused = true;
+    toggleBtn.innerText = "▶️ Resume";
+  }
+}
+function handleRecitationChange() {
+  if (isStarted) {
+    isStarted = false;
+    isPaused = false;
+    document.getElementById("toggle-audio").innerText = "▶️ Start Recitation";
+    const audio = document.getElementById("audio");
+    audio.pause();
+    audio.currentTime = 0;
+  }
+}
+function startRecitation() {
       currentSurah = parseInt(document.getElementById("surah-picker").value);
       selectedReciter = document.getElementById("reciter-picker").value;
       currentAyah = parseInt(document.getElementById("ayah-picker").value);
@@ -276,7 +308,6 @@
           playAyah(currentSurah, currentAyah);
         });
     }
-
     function updateProgress(finished = false) {
       const progressBar = document.getElementById("progress-bar");
       const progress = finished ? 100 : Math.floor((currentAyah / totalAyahs) * 100);
@@ -284,59 +315,71 @@
     }
 
     function playAyah(surah, ayah) {
-      const audio = document.getElementById("audio");
-      const ayahText = document.getElementById("ayah-text");
-      const info = document.getElementById("info");
-      updateProgress();
+  const audio = document.getElementById("audio");
+  const ayahText = document.getElementById("ayah-text");
+  const info = document.getElementById("info");
+  updateProgress();
 
-      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
-        .then(res => res.json())
-        .then(data => {
-          ayahText.style.opacity = 0;
-          info.style.opacity = 0;
+  Promise.all([
+    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`),
+    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
+  ])
+    .then(responses => Promise.all(responses.map(res => res.json())))
+    .then(([arabicData, englishData]) => {
+      ayahText.style.opacity = 0;
+      info.style.opacity = 0;
 
-          setTimeout(() => {
-            ayahText.innerText = data.data.text;
-            info.innerText = `${surahName} - Ayah ${ayah}`;
-            ayahText.style.opacity = 1;
-            info.style.opacity = 1;
-          }, 200);
+      setTimeout(() => {
+        ayahText.innerHTML = `
+          <div style="font-size: 30px; direction: rtl; margin-bottom: 20px;">${arabicData.data.text}</div>
+          <div style="font-size: 20px; direction: ltr; color: #ccc;">${englishData.data.text}</div>
+        `;
+        info.innerText = `${surahName} - Ayah ${ayah}`;
+        ayahText.style.opacity = 1;
+        info.style.opacity = 1;
+      }, 200);
 
-          const surahStr = String(surah).padStart(3, '0');
-          const ayahStr = String(ayah).padStart(3, '0');
+      const surahStr = String(surah).padStart(3, '0');
+      const ayahStr = String(ayah).padStart(3, '0');
 
-          if (selectedReciter === "Alafasy") {
-            fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.alafasy`)
-              .then(res => res.json())
-              .then(alafasyData => {
-                audio.src = alafasyData.data.audio;
-                audio.load();
-                audio.style.display = "block";
-                audio.play();
-              });
-          } else {
-            const folder = selectedReciter === "Dossary"
-              ? "Yasser_Ad-Dussary_128kbps"
-              : "Husary_128kbps";
-
-            const audioURL = `https://everyayah.com/data/${folder}/${surahStr}${ayahStr}.mp3`;
-            audio.src = audioURL;
+      if (selectedReciter === "Alafasy") {
+        fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.alafasy`)
+          .then(res => res.json())
+          .then(alafasyData => {
+            audio.src = alafasyData.data.audio;
             audio.load();
             audio.style.display = "block";
             audio.play();
-          }
+            document.getElementById("toggle-audio").innerText = "⏸️ Pause";
 
-          audio.onended = () => {
-            if (ayah < totalAyahs) {
-              currentAyah++;
-              playAyah(surah, currentAyah);
-            } else {
-              updateProgress(true);
-              info.innerText = `✅ Finished reciting Surah ${surahName}`;
-            }
-          };
-        });
-    }
+          });
+      } else {
+        const folder = selectedReciter === "Dossary"
+          ? "Yasser_Ad-Dussary_128kbps"
+          : "Husary_128kbps";
+
+        const audioURL = `https://everyayah.com/data/${folder}/${surahStr}${ayahStr}.mp3`;
+        audio.src = audioURL;
+        audio.load();
+        audio.style.display = "block";
+        audio.play();
+      }
+
+      audio.onended = () => {
+        if (ayah < totalAyahs) {
+          currentAyah++;
+          playAyah(surah, currentAyah);
+        } else {
+          updateProgress(true);
+          info.innerText = `✅ Finished reciting Surah ${surahName}`;
+          document.getElementById("toggle-audio").innerText = "▶️ Start Recitation";
+isStarted = false;
+isPaused = false;
+
+        }
+      };
+    });
+}
 
     window.onload = populateAyahPicker;
   </script>
