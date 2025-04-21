@@ -204,6 +204,16 @@
     .custom-select-btn.open i {
       transform: rotate(180deg);
     }
+
+    .picker-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
   </style>
 </head>
 <body>
@@ -216,6 +226,7 @@
   <h1>🔊 Surah Recitation - Ayah by Ayah</h1>
 
   <div>
+    <div class="picker-group">
     <label for="reciter-picker">Reciter:</label>
     <div class="custom-select">
       <div class="custom-select-btn" id="reciter-btn" onclick="toggleReciterOptions('reciter')">Alafasy <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
@@ -356,7 +367,8 @@
       </div>
     </div>
   </div>
-
+  </div>
+<br>
   <button id="toggle-audio" onclick="toggleAudio()">▶️ Start Recitation</button>
 
 
@@ -482,9 +494,6 @@ function handleRecitationChange() {
   }
 }
 function startRecitation() {
-      selectedReciter = document.getElementById("reciter-picker").value;
-      currentAyah = parseInt(document.getElementById("ayah-picker").value);
-
       fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}`)
         .then(res => res.json())
         .then(data => {
@@ -509,7 +518,7 @@ function startRecitation() {
 
   Promise.all([
     fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar`),
-    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.asad`)
+    fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/en.sahih`)
   ])
     .then(responses => Promise.all(responses.map(res => res.json())))
     .then(([arabicData, englishData]) => {
