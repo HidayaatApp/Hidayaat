@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta charset="UTF-8">
   <title>Surah Recitation - Ayah by Ayah</title>
   <style>
@@ -140,6 +141,7 @@
     .custom-select {
       position: relative;
       user-select: none;
+        max-width: fit-content;
     }
 
     .custom-select-btn {
@@ -168,6 +170,8 @@
       z-index: 10;
       display: none;
       flex-direction: column;
+        max-height: 350px;
+        overflow-y: scroll;
     }
 
     .custom-select-options.active {
