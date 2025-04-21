@@ -156,6 +156,13 @@
       align-items: center;
       justify-content: space-between;
       min-width: 100px;
+      transition: background 0.2s ease;
+    }
+
+    .custom-select-btn:hover {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
     }
 
     .custom-select-options {
@@ -188,6 +195,14 @@
     .custom-select-options div:hover {
       background-color: var(--primary);
       color: white;
+    }
+
+    .custom-select-btn i {
+      transition: transform 0.5s ease;
+    }
+
+    .custom-select-btn.open i {
+      transform: rotate(180deg);
     }
   </style>
 </head>
@@ -339,7 +354,7 @@
   <button id="toggle-audio" onclick="toggleAudio()">▶️ Start Recitation</button>
 
 
-  <div id="ayah-text">—</div>
+  <div id="ayah-text">Please select a surah and reciter to begin.</div>
   <div id="info">—</div>
   <audio id="audio" controls></audio>
 
@@ -359,6 +374,7 @@
 
     function toggleSurahOptions() {
       surahOptions.classList.toggle('active');
+      SurahBtn.classList.toggle('open');
     }
 
     surahOptions.querySelectorAll('div').forEach(option => {
@@ -366,6 +382,7 @@
         SurahBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
         currentSurah = parseInt(option.getAttribute('value'));
         surahOptions.classList.remove('active');
+        SurahBtn.classList.remove('open');
         populateAyahPicker();
         handleRecitationChange();
       });
@@ -374,6 +391,7 @@
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.custom-select')) {
         surahOptions.classList.remove('active');
+        SurahBtn.classList.remove('open');
       }
     });
 
