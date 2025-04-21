@@ -85,6 +85,21 @@
       align-items: center;
       justify-content: space-between;
       min-width: 100px;
+      transition: background 0.2s ease;
+    }
+
+    .custom-select-btn:hover {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
+    }
+
+    .custom-select-btn i {
+      transition: transform 0.5s ease;
+    }
+
+    .custom-select-btn.open i {
+      transform: rotate(180deg);
     }
 
     .custom-select-options {
@@ -282,6 +297,7 @@
 
     langBtn.addEventListener('click', () => {
       langOptions.classList.toggle('active');
+      langBtn.classList.toggle('open');
     });
 
     langOptions.querySelectorAll('div').forEach(option => {
@@ -289,6 +305,7 @@
         const lang = option.getAttribute('data-lang');
         langBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
         langOptions.classList.remove('active');
+        langBtn.classList.remove('open');
         window.location.href = lang === 'ar' ? '/ar/' : '/';
       });
     });
@@ -296,6 +313,7 @@
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.custom-select')) {
         langOptions.classList.remove('active');
+        langBtn.classList.remove('open');
       }
     });
 
