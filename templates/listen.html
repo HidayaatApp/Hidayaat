@@ -206,8 +206,8 @@
 
 
     <label for="surah-picker">Surah:</label>
-        <div class="custom-select">
-        <div class="custom-select-btn" id="surah-btn" onchange="populateAyahPicker(); handleRecitationChange()">Al-Fatiha <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
+    <div class="custom-select">
+        <div class="custom-select-btn" id="surah-btn" onclick="toggleSurahOptions()">Al-Fatiha <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
         <div class="custom-select-options" id="surah-options">
             <div value="1">Al-Fatiha</div>
             <div value="2">Al-Baqarah</div>
@@ -353,14 +353,17 @@
     const SurahBtn = document.getElementById('surah-btn');
     const surahOptions = document.getElementById('surah-options');
 
-    SurahBtn.addEventListener('click', () => {
+    function toggleSurahOptions() {
       surahOptions.classList.toggle('active');
-    });
+    }
 
     surahOptions.querySelectorAll('div').forEach(option => {
       option.addEventListener('click', () => {
         SurahBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
+        currentSurah = parseInt(option.getAttribute('value'));
         surahOptions.classList.remove('active');
+        populateAyahPicker();
+        handleRecitationChange();
       });
     });
 
@@ -371,13 +374,14 @@
     });
 
     function populateAyahPicker() {
-      const surahId = document.getElementById("surah-picker").value;
-      fetch(`https://api.alquran.cloud/v1/surah/${surahId}`).then(res => res.json()).then(data => {
+      fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}`).then(res => res.json()).then(data => {
         const ayahPicker = document.getElementById("ayah-picker");
         ayahPicker.innerHTML = "";
         for (let i = 1; i <= data.data.numberOfAyahs; i++) {
           ayahPicker.innerHTML += `<option value="${i}">${i}</option>`;
         }
+        currentAyah = 1;
+        document.getElementById("ayah-picker").value = 1;
       });
     }
 
@@ -413,7 +417,6 @@ function handleRecitationChange() {
   }
 }
 function startRecitation() {
-      currentSurah = parseInt(document.getElementById("surah-picker").value);
       selectedReciter = document.getElementById("reciter-picker").value;
       currentAyah = parseInt(document.getElementById("ayah-picker").value);
 
