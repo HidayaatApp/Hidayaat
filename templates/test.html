@@ -1,10 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <title>Testing</title>
+  <meta charset="UTF-8">
+  <title>Al-Quran Viewer</title>
+  <style>
+    body {
+      background-color: #1c1c2d;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #e67e22;
+      margin-bottom: 20px;
+    }
+
+    #qiraa-select {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 20px;
+    }
+
+    #quran-page {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      margin-bottom: 20px;
+    }
+
+    .nav-buttons {
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #page-number {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
+
+  <h1>📖 Al-Quran Viewer</h1>
+
+  <label for="qiraa-select">Choose Qiraa:</label>
+  <select id="qiraa-select" onchange="changeQiraa()">
+    <option value="hafs">Hafs</option>
+    <option value="warsh">Warsh</option>
+  </select>
+
+  <div>
+    <img id="quran-page" src="../quran_pages/hafs/1.jpg" alt="Quran Page">
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="prevPage()">⬅️ Previous Page</button>
+    <button onclick="nextPage()">➡️ Next Page</button>
+  </div>
+
+  <div id="page-number">Page: 1</div>
+
+  <script>
+    let currentPage = 1;
+    const maxPage = 604;
+    let currentQiraa = "hafs";
+
+    function updatePage() {
+      const imgPath = `../quran_pages/${currentQiraa}/${currentPage}.jpg`;
+      document.getElementById("quran-page").src = imgPath;
+      document.getElementById("page-number").innerText = `Page: ${currentPage}`;
+    }
+
+    function nextPage() {
+      if (currentPage < maxPage) {
+        currentPage++;
+        updatePage();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePage();
+      }
+    }
+
+    function changeQiraa() {
+      currentQiraa = document.getElementById("qiraa-select").value;
+      updatePage();
+    }
+  </script>
 
 </body>
 </html>
