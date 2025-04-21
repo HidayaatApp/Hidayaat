@@ -15,6 +15,10 @@ def quiz():
 def listen():
     return render_template('listen.html')
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 @app.route('/login')
 def login():
     return render_template('login.html')
