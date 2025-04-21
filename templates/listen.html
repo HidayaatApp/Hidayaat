@@ -178,7 +178,7 @@
       display: none;
       flex-direction: column;
         max-height: 350px;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     .custom-select-options.active {
@@ -217,11 +217,14 @@
 
   <div>
     <label for="reciter-picker">Reciter:</label>
-    <select id="reciter-picker" onchange="handleRecitationChange()">
-      <option value="Alafasy">Alafasy</option>
-      <option value="Dossary">Dossary</option>
-      <option value="Husary">Husary</option>
-    </select>
+    <div class="custom-select">
+      <div class="custom-select-btn" id="reciter-btn" onclick="toggleReciterOptions('reciter')">Alafasy <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
+      <div class="custom-select-options" id="reciter-options">
+        <div value="Alafasy">Alafasy</div>
+        <div value="Dossary">Dossary</div>
+        <div value="Husary">Husary</div>
+      </div>
+    </div>
 
 
     <label for="surah-picker">Surah:</label>
@@ -346,9 +349,12 @@
     </div>
 
     <label for="ayah-picker">Start from Ayah:</label>
-    <select id="ayah-picker" onchange="handleRecitationChange()">
-      <option value="1">1</option>
-    </select>
+    <div class="custom-select">
+      <div class="custom-select-btn" id="ayah-btn" onclick="toggleAyahOptions()">1 <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
+      <div class="custom-select-options" id="ayah-options">
+        <div value="1">1</div>
+      </div>
+    </div>
   </div>
 
   <button id="toggle-audio" onclick="toggleAudio()">▶️ Start Recitation</button>
@@ -370,6 +376,10 @@
 
     const SurahBtn = document.getElementById('surah-btn');
     const surahOptions = document.getElementById('surah-options');
+    const ReciterBtn = document.getElementById('reciter-btn');
+    const reciterOptions = document.getElementById('reciter-options');
+    const AyahBtn = document.getElementById('ayah-btn');
+    const ayahOptions = document.getElementById('ayah-options');
 
     function toggleSurahOptions() {
       surahOptions.classList.toggle('active');
@@ -387,24 +397,58 @@
       });
     });
 
-    document.addEventListener('click', function (e) {
+      function toggleReciterOptions() {
+        reciterOptions.classList.toggle('active');
+        ReciterBtn.classList.toggle('open');
+      }
+
+      reciterOptions.querySelectorAll('div').forEach(option => {
+        option.addEventListener('click', () => {
+          ReciterBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
+          selectedReciter = option.getAttribute('value');
+          reciterOptions.classList.remove('active');
+          ReciterBtn.classList.remove('open');
+          handleRecitationChange();
+        });
+      });
+
+function toggleAyahOptions() {
+    ayahOptions.classList.toggle('active');
+    AyahBtn.classList.toggle('open');
+  }
+
+      document.addEventListener('click', function (e) {
       if (!e.target.closest('.custom-select')) {
+        reciterOptions.classList.remove('active');
+        ReciterBtn.classList.remove('open');
         surahOptions.classList.remove('active');
         SurahBtn.classList.remove('open');
+        ayahOptions.classList.remove('active');
+        AyahBtn.classList.remove('open');
       }
     });
 
-    function populateAyahPicker() {
-      fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}`).then(res => res.json()).then(data => {
-        const ayahPicker = document.getElementById("ayah-picker");
-        ayahPicker.innerHTML = "";
-        for (let i = 1; i <= data.data.numberOfAyahs; i++) {
-          ayahPicker.innerHTML += `<option value="${i}">${i}</option>`;
-        }
-        currentAyah = 1;
-        document.getElementById("ayah-picker").value = 1;
-      });
-    }
+
+  function populateAyahPicker() {
+    fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}`).then(res => res.json()).then(data => {
+      ayahOptions.innerHTML = "";
+      for (let i = 1; i <= data.data.numberOfAyahs; i++) {
+        const div = document.createElement("div");
+        div.setAttribute("value", i);
+        div.innerText = i;
+        div.addEventListener("click", () => {
+          AyahBtn.innerHTML = `${i} <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>`;
+          currentAyah = i;
+          handleRecitationChange();
+          ayahOptions.classList.remove('active');
+          AyahBtn.classList.remove('open');
+        });
+        ayahOptions.appendChild(div);
+      }
+      currentAyah = 1;
+      AyahBtn.innerHTML = `1 <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>`;
+    });
+  }
 
     let isStarted = false;
 let isPaused = false;
