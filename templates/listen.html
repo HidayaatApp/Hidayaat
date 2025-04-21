@@ -137,6 +137,54 @@
 .back-button:hover {
     color: var(--primary-dark);
 }
+    .custom-select {
+      position: relative;
+      user-select: none;
+    }
+
+    .custom-select-btn {
+      border: 1px solid var(--primary);
+      background-color: transparent;
+      color: var(--text-dark);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 100px;
+    }
+
+    .custom-select-options {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background: white;
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+    }
+
+    .custom-select-options.active {
+      display: flex;
+    }
+
+    .custom-select-options div {
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+
+    .custom-select-options div:hover {
+      background-color: var(--primary);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -156,124 +204,127 @@
       <option value="Husary">Husary</option>
     </select>
 
-    <label for="surah-picker">Surah:</label>
-    <select id="surah-picker" onchange="populateAyahPicker(); handleRecitationChange()">
-        <option value="1">Al-Fatiha</option>
-        <option value="2">Al-Baqarah</option>
-        <option value="3">Aali-Imran</option>
-        <option value="4">An-Nisa</option>
-        <option value="5">Al-Maidah</option>
-        <option value="6">Al-An'am</option>
-        <option value="7">Al-A'raf</option>
-        <option value="8">Al-Anfal</option>
-        <option value="9">At-Tawbah</option>
-        <option value="10">Yunus</option>
-        <option value="11">Hud</option>
-        <option value="12">Yusuf</option>
-        <option value="13">Ar-Ra'd</option>
-        <option value="14">Ibrahim</option>
-        <option value="15">Al-Hijr</option>
-        <option value="16">An-Nahl</option>
-        <option value="17">Al-Isra</option>
-        <option value="18">Al-Kahf</option>
-        <option value="19">Maryam</option>
-        <option value="20">Ta-Ha</option>
-        <option value="21">Al-Anbiya</option>
-        <option value="22">Al-Hajj</option>
-        <option value="23">Al-Mu'minun</option>
-        <option value="24">An-Nur</option>
-        <option value="25">Al-Furqan</option>
-        <option value="26">Ash-Shu'ara</option>
-        <option value="27">An-Naml</option>
-        <option value="28">Al-Qasas</option>
-        <option value="29">Al-Ankabut</option>
-        <option value="30">Ar-Rum</option>
-        <option value="31">Luqman</option>
-        <option value="32">As-Sajda</option>
-        <option value="33">Al-Ahzab</option>
-        <option value="34">Saba</option>
-        <option value="35">Fatir</option>
-        <option value="36">Ya-Sin</option>
-        <option value="37">As-Saffat</option>
-        <option value="38">Sad</option>
-        <option value="39">Az-Zumar</option>
-        <option value="40">Ghafir</option>
-        <option value="41">Fussilat</option>
-        <option value="42">Ash-Shura</option>
-        <option value="43">Az-Zukhruf</option>
-        <option value="44">Ad-Dukhan</option>
-        <option value="45">Al-Jathiyah</option>
-        <option value="46">Al-Ahqaf</option>
-        <option value="47">Muhammad</option>
-        <option value="48">Al-Fath</option>
-        <option value="49">Al-Hujurat</option>
-        <option value="50">Qaf</option>
-        <option value="51">Adh-Dhariyat</option>
-        <option value="52">At-Tur</option>
-        <option value="53">An-Najm</option>
-        <option value="54">Al-Qamar</option>
-        <option value="55">Ar-Rahman</option>
-        <option value="56">Al-Waqi'a</option>
-        <option value="57">Al-Hadid</option>
-        <option value="58">Al-Mujadila</option>
-        <option value="59">Al-Hashr</option>
-        <option value="60">Al-Mumtahina</option>
-        <option value="61">As-Saff</option>
-        <option value="62">Al-Jumua</option>
-        <option value="63">Al-Munafiqun</option>
-        <option value="64">At-Taghabun</option>
-        <option value="65">At-Talaq</option>
-        <option value="66">At-Tahrim</option>
-        <option value="67">Al-Mulk</option>
-        <option value="68">Al-Qalam</option>
-        <option value="69">Al-Haqqah</option>
-        <option value="70">Al-Ma'arij</option>
-        <option value="71">Nuh</option>
-        <option value="72">Al-Jinn</option>
-        <option value="73">Al-Muzzammil</option>
-        <option value="74">Al-Muddaththir</option>
-        <option value="75">Al-Qiyamah</option>
-        <option value="76">Al-Insan</option>
-        <option value="77">Al-Mursalat</option>
-        <option value="78">An-Naba</option>
-        <option value="79">An-Nazi'at</option>
-        <option value="80">'Abasa</option>
-        <option value="81">At-Takwir</option>
-        <option value="82">Al-Infitar</option>
-        <option value="83">Al-Mutaffifin</option>
-        <option value="84">Al-Inshiqaq</option>
-        <option value="85">Al-Buruj</option>
-        <option value="86">At-Tariq</option>
-        <option value="87">Al-A'la</option>
-        <option value="88">Al-Ghashiyah</option>
-        <option value="89">Al-Fajr</option>
-        <option value="90">Al-Balad</option>
-        <option value="91">Ash-Shams</option>
-        <option value="92">Al-Layl</option>
-        <option value="93">Ad-Duhaa</option>
-        <option value="94">Ash-Sharh</option>
-        <option value="95">At-Tin</option>
-        <option value="96">Al-Alaq</option>
-        <option value="97">Al-Qadr</option>
-        <option value="98">Al-Bayyina</option>
-        <option value="99">Az-Zalzalah</option>
-        <option value="100">Al-Adiyat</option>
-        <option value="101">Al-Qari'ah</option>
-        <option value="102">At-Takathur</option>
-        <option value="103">Al-Asr</option>
-        <option value="104">Al-Humazah</option>
-        <option value="105">Al-Fil</option>
-        <option value="106">Quraysh</option>
-        <option value="107">Al-Ma'un</option>
-        <option value="108">Al-Kawthar</option>
-        <option value="109">Al-Kafirun</option>
-        <option value="110">An-Nasr</option>
-        <option value="111">Al-Masad</option>
-        <option value="112">Al-Ikhlas</option>
-        <option value="113">Al-Falaq</option>
-        <option value="114">An-Nas</option>
 
-    </select>
+    <label for="surah-picker">Surah:</label>
+        <div class="custom-select">
+        <div class="custom-select-btn" id="surah-btn" onchange="populateAyahPicker(); handleRecitationChange()">Al-Fatiha <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></div>
+        <div class="custom-select-options" id="surah-options">
+            <div value="1">Al-Fatiha</div>
+            <div value="2">Al-Baqarah</div>
+            <div value="3">Aali-Imran</div>
+            <div value="4">An-Nisa</div>
+            <div value="5">Al-Maidah</div>
+            <div value="6">Al-An'am</div>
+            <div value="7">Al-A'raf</div>
+            <div value="8">Al-Anfal</div>
+            <div value="9">At-Tawbah</div>
+            <div value="10">Yunus</div>
+            <div value="11">Hud</div>
+            <div value="12">Yusuf</div>
+            <div value="13">Ar-Ra'd</div>
+            <div value="14">Ibrahim</div>
+            <div value="15">Al-Hijr</div>
+            <div value="16">An-Nahl</div>
+            <div value="17">Al-Isra</div>
+            <div value="18">Al-Kahf</div>
+            <div value="19">Maryam</div>
+            <div value="20">Ta-Ha</div>
+            <div value="21">Al-Anbiya</div>
+            <div value="22">Al-Hajj</div>
+            <div value="23">Al-Mu'minun</div>
+            <div value="24">An-Nur</div>
+            <div value="25">Al-Furqan</div>
+            <div value="26">Ash-Shu'ara</div>
+            <div value="27">An-Naml</div>
+            <div value="28">Al-Qasas</div>
+            <div value="29">Al-Ankabut</div>
+            <div value="30">Ar-Rum</div>
+            <div value="31">Luqman</div>
+            <div value="32">As-Sajda</div>
+            <div value="33">Al-Ahzab</div>
+            <div value="34">Saba</div>
+            <div value="35">Fatir</div>
+            <div value="36">Ya-Sin</div>
+            <div value="37">As-Saffat</div>
+            <div value="38">Sad</div>
+            <div value="39">Az-Zumar</div>
+            <div value="40">Ghafir</div>
+            <div value="41">Fussilat</div>
+            <div value="42">Ash-Shura</div>
+            <div value="43">Az-Zukhruf</div>
+            <div value="44">Ad-Dukhan</div>
+            <div value="45">Al-Jathiyah</div>
+            <div value="46">Al-Ahqaf</div>
+            <div value="47">Muhammad</div>
+            <div value="48">Al-Fath</div>
+            <div value="49">Al-Hujurat</div>
+            <div value="50">Qaf</div>
+            <div value="51">Adh-Dhariyat</div>
+            <div value="52">At-Tur</div>
+            <div value="53">An-Najm</div>
+            <div value="54">Al-Qamar</div>
+            <div value="55">Ar-Rahman</div>
+            <div value="56">Al-Waqi'a</div>
+            <div value="57">Al-Hadid</div>
+            <div value="58">Al-Mujadila</div>
+            <div value="59">Al-Hashr</div>
+            <div value="60">Al-Mumtahina</div>
+            <div value="61">As-Saff</div>
+            <div value="62">Al-Jumua</div>
+            <div value="63">Al-Munafiqun</div>
+            <div value="64">At-Taghabun</div>
+            <div value="65">At-Talaq</div>
+            <div value="66">At-Tahrim</div>
+            <div value="67">Al-Mulk</div>
+            <div value="68">Al-Qalam</div>
+            <div value="69">Al-Haqqah</div>
+            <div value="70">Al-Ma'arij</div>
+            <div value="71">Nuh</div>
+            <div value="72">Al-Jinn</div>
+            <div value="73">Al-Muzzammil</div>
+            <div value="74">Al-Muddaththir</div>
+            <div value="75">Al-Qiyamah</div>
+            <div value="76">Al-Insan</div>
+            <div value="77">Al-Mursalat</div>
+            <div value="78">An-Naba</div>
+            <div value="79">An-Nazi'at</div>
+            <div value="80">'Abasa</div>
+            <div value="81">At-Takwir</div>
+            <div value="82">Al-Infitar</div>
+            <div value="83">Al-Mutaffifin</div>
+            <div value="84">Al-Inshiqaq</div>
+            <div value="85">Al-Buruj</div>
+            <div value="86">At-Tariq</div>
+            <div value="87">Al-A'la</div>
+            <div value="88">Al-Ghashiyah</div>
+            <div value="89">Al-Fajr</div>
+            <div value="90">Al-Balad</div>
+            <div value="91">Ash-Shams</div>
+            <div value="92">Al-Layl</div>
+            <div value="93">Ad-Duhaa</div>
+            <div value="94">Ash-Sharh</div>
+            <div value="95">At-Tin</div>
+            <div value="96">Al-Alaq</div>
+            <div value="97">Al-Qadr</div>
+            <div value="98">Al-Bayyina</div>
+            <div value="99">Az-Zalzalah</div>
+            <div value="100">Al-Adiyat</div>
+            <div value="101">Al-Qari'ah</div>
+            <div value="102">At-Takathur</div>
+            <div value="103">Al-Asr</div>
+            <div value="104">Al-Humazah</div>
+            <div value="105">Al-Fil</div>
+            <div value="106">Quraysh</div>
+            <div value="107">Al-Ma'un</div>
+            <div value="108">Al-Kawthar</div>
+            <div value="109">Al-Kafirun</div>
+            <div value="110">An-Nasr</div>
+            <div value="111">Al-Masad</div>
+            <div value="112">Al-Ikhlas</div>
+            <div value="113">Al-Falaq</div>
+            <div value="114">An-Nas</div>
+        </div>
+    </div>
 
     <label for="ayah-picker">Start from Ayah:</label>
     <select id="ayah-picker" onchange="handleRecitationChange()">
@@ -298,6 +349,26 @@
     let currentSurah = 1;
     let surahName = "";
     let selectedReciter = "Alafasy";
+
+    const SurahBtn = document.getElementById('surah-btn');
+    const surahOptions = document.getElementById('surah-options');
+
+    SurahBtn.addEventListener('click', () => {
+      surahOptions.classList.toggle('active');
+    });
+
+    surahOptions.querySelectorAll('div').forEach(option => {
+      option.addEventListener('click', () => {
+        SurahBtn.innerHTML = option.innerHTML + ' <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>';
+        surahOptions.classList.remove('active');
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.custom-select')) {
+        surahOptions.classList.remove('active');
+      }
+    });
 
     function populateAyahPicker() {
       const surahId = document.getElementById("surah-picker").value;
