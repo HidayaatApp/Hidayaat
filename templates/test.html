@@ -70,7 +70,7 @@
   </select>
 
   <div>
-    <img id="quran-page" src="../quran_pages/hafs/1.jpg" alt="Quran Page">
+    <img id="quran-page" src="../static/quran_pages/hafs/1.jpg" alt="Quran Page">
   </div>
 
   <div class="nav-buttons">
@@ -86,7 +86,7 @@
     let currentQiraa = "hafs";
 
     function updatePage() {
-      const imgPath = `../quran_pages/${currentQiraa}/${currentPage}.jpg`;
+      const imgPath = `../static/quran_pages/${currentQiraa}/${currentPage}.jpg`;
       document.getElementById("quran-page").src = imgPath;
       document.getElementById("page-number").innerText = `Page: ${currentPage}`;
     }
